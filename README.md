@@ -35,7 +35,7 @@ The output will be sent to stdout (i.e. the console you're running the script in
 * One for the total number of visits to each path (i.e. the number of times each path appears in the input file)
 * One for the total number of unique visits to each path (i.e. the number of different IP addresses that appear next to each path in the input file)
 
-Each list will be ordered by the relevant total, most visits first. Each line in the list will consist of the path, then a space, then the IP address.
+Each list will be ordered by the relevant total, most visits first. Each line in the list will consist of the path, then a space, then the relevant total.
 
 ## Testing
 

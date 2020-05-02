@@ -45,12 +45,12 @@ Program functionality is tested with RSpec. From the root directory, run:
 rspec
 ```
 
-All tests should pass.
+All tests should pass. SimpleCov is enabled and the RSpec report should include test coverage.
 
 ## Development tasks
 
 - [x] Install Ruby, RSpec, initial test setup confirming a script exists and executes correctly without arguments
-- [ ] Add code coverage checks
+- [x] Add code coverage checks
 - [ ] Accept a filename input, and throw an error if the filename doesn't exist
 - [ ] tbc
 

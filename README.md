@@ -93,7 +93,7 @@ Creating individual PathItem objects for each path in the PathList object would 
 
 ## 'Extra credit' tasks
 
-- [ ] Sort results alphanumerically within sets of paths that have the same totals 
+- [x] Sort results alphanumerically within sets of paths that have the same totals 
 - [ ] Add flags to the command line to show only total visits, and only total unique visits
 - [ ] Add a help flag to the command line with usage instructions
 - [ ] Ensure CRLF and LF both work for input file format
@@ -108,7 +108,7 @@ Creating individual PathItem objects for each path in the PathList object would 
 
 ## Version
 
-This is version 1.0.0. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
+This is version 1.0.1. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
 
 ## License
 

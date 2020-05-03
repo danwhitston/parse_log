@@ -16,12 +16,8 @@ class Report
   private
 
   def visit_report(summary_list)
-    summary_list.reduce('') do |report, list_item|
-      report + line_report(path: list_item[:path], visits: list_item[:visits])
+    summary_list.reduce('') do |report, report_line|
+      report + report_line.join(' ') + "\n"
     end
-  end
-
-  def line_report(path:, visits:)
-    "#{path} #{visits}\n"
   end
 end

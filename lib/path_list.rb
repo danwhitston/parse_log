@@ -23,8 +23,7 @@ class PathList
 
   def summary_by
     @list
-      .map { |list_item| { path: list_item[0], visits: yield(list_item[1]) } }
-      .sort_by { |list_item| list_item[:visits] }
-      .reverse
+      .transform_values { |ip_list| yield(ip_list) }
+      .sort_by { |path, visits| [-visits, path] }
   end
 end

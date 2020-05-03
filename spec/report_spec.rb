@@ -19,8 +19,8 @@ RSpec.describe Report do
 
     it 'includes a summary with page visits' do
       visit_summary = [
-        { path: '/about', visits: 2 },
-        { path: '/index', visits: 1 }
+        ['/about', 2],
+        ['/index', 1]
       ]
       allow(path_list).to receive(:visit_summary).and_return(visit_summary)
       allow(path_list).to receive(:unique_summary).and_return([])
@@ -29,8 +29,8 @@ RSpec.describe Report do
 
     it 'includes a summary with unique visits' do
       unique_summary = [
-        { path: '/about', visits: 3 },
-        { path: '/index', visits: 1 }
+        ['/about', 3],
+        ['/index', 1]
       ]
       allow(path_list).to receive(:visit_summary).and_return([])
       allow(path_list).to receive(:unique_summary).and_return(unique_summary)
@@ -39,14 +39,14 @@ RSpec.describe Report do
 
     it 'produces a full, correctly formatted report' do
       visit_summary = [
-        { path: '/about', visits: 5 },
-        { path: '/help/1', visits: 3 },
-        { path: '/index', visits: 1 }
+        ['/about', 5],
+        ['/help/1', 3],
+        ['/index', 1]
       ]
       unique_summary = [
-        { path: '/help/1', visits: 3 },
-        { path: '/about', visits: 2 },
-        { path: '/index', visits: 1 }
+        ['/help/1', 3],
+        ['/about', 2],
+        ['/index', 1]
       ]
       summary_report = <<~TESTREPORT
         Page visits:

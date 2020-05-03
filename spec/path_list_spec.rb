@@ -6,7 +6,7 @@ require 'path_list'
 RSpec.describe PathList do
   describe '.new' do
     it 'creates successfully' do
-      expect { subject }.not_to raise_error
+      expect { subject }.to_not raise_error
     end
   end
 

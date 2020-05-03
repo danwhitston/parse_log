@@ -70,6 +70,8 @@ An outline list of classes might be:
 * PathList - store and manipulate the set of paths
 * Report - inserts list totals into a template for output to the console
 
+Creating individual PathItem objects for each path in the PathList object would result in better-formed OO code, but the weight of creating a new class instance for every path in a log file would likely reduce the code's efficiency.
+
 ## Development tasks
 
 - [x] Install Ruby, RSpec, initial test setup confirming a script exists and executes correctly without arguments
@@ -77,7 +79,7 @@ An outline list of classes might be:
 - [x] Add a basic logfile, expected output, and feature test to drive feature development
 - [ ] Accept a filename input, and throw an error if the filename or the file don't exist
 - [ ] Parse file lines into a PathList object, with many visits to each unique path
-- [ ] Summarise the PathList data as total and total unique visits per path
+- [x] Summarise the PathList data as total and total unique visits per path
 - [ ] Output summary data as a Report in the correct format
 - [ ] tbc
 

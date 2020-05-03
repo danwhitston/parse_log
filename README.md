@@ -10,10 +10,10 @@ Before using the program, you'll need to download the code and open a shell cons
 
 ```sh
 bundle install
-parser.rb # runs with the sample logfile
+parser.rb webserver.log # runs with the sample logfile
 ```
 
-A sample logfile is included at [webserver.log](webserver.log), and will be used by default if an input filename is not provided as an argument to the command.
+A sample logfile is included at [webserver.log](webserver.log).
 
 ## Logfile format
 
@@ -47,18 +47,47 @@ rspec
 
 All tests should pass. SimpleCov is enabled and the RSpec report should include test coverage.
 
+### Feature testing
+
+Feature specs should interact with an application via its external interface. Since our interface is a Ruby script executed via command line, we call the script as a new process via `system ruby` and test the output to stdout or stderr. The log files are:
+
+* A tiny log file - [spec/fixtures/tiny.log](spec/fixtures/tiny.log) to exercise basic file access tests
+* A small log file - [spec/fixtures/small.log](spec/fixtures/small.log) producing output consistent with [spec/fixtures/small_summary.txt](spec/fixtures/small_summary.txt)
+
+## Assumptions and architecture
+
+The key decision point in picking a suitable architecture is whether the application should be able to cope with arbitrarily large logfiles. The simplest solution would rely on reading the entire logfile into memory using e.g. `File.readlines`, then transforming the data afterwards and producing output. I decided to build for a solution that reduces memory usage by processing the log during load using `File#each`. 
+
+I can see three levels of efficiency, and am targeting the second:
+
+1. Log files of e.g. a few million visits are fine for loading the full file directly, and processing in-memory. Populating an array with even a hundred million elements is manageable and takes less than half a minute on most modern desktop computers
+1. For larger files, there should be some benefit to loading the data into memory one line at a time, and storing in a processed form. To measure unique visits, we would still have to store individual IPs visiting each path. This could become taxing for large enough logfiles
+1. Very large log files could not be loaded into memory all in one go. Instead we'd need to look at processing logfiles into intermediate files where visits were grouped by path and IP, then into files containing per-path totals. If we were looking at logfiles of that size, though, a Ruby script might not be the best solution in general, and displaying a list of paths in the console would be pointless
+
+An outline list of classes might be:
+
+* Parser - the external interface; accepts input and returns output
+* PathList - store and manipulate the set of paths
+* Report - inserts list totals into a template for output to the console
+
 ## Development tasks
 
 - [x] Install Ruby, RSpec, initial test setup confirming a script exists and executes correctly without arguments
 - [x] Add code coverage checks
-- [ ] Accept a filename input, and throw an error if the filename doesn't exist
+- [x] Add a basic logfile, expected output, and feature test to drive feature development
+- [ ] Accept a filename input, and throw an error if the filename or the file don't exist
+- [ ] Parse file lines into a PathList object, with many visits to each unique path
+- [ ] Summarise the PathList data as total and total unique visits per path
+- [ ] Output summary data as a Report in the correct format
 - [ ] tbc
 
 ## 'Extra credit' tasks
 
 - [ ] Sort results alphanumerically within sets of paths that have the same totals 
 - [ ] Add flags to the command line to show only total visits, and only total unique visits
+- [ ] Add a help flag to the command line with usage instructions
 - [ ] Ensure CRLF and LF both work for input file format
+- [ ] Build code to generate arbitrarily large logfiles for load testing purposes, and ensure the script performs well under load
 - [ ] Parse all valid path possibilities correctly, i.e. paths with space characters or other special characters
 - [ ] Validate URL paths to the official standard
 - [ ] Validate IPv4 addresses to the official standard

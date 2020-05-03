@@ -1,0 +1,9 @@
+Page visits:
+/index 4
+/help_page/1 3
+/home 1
+
+Unique page visits:
+/help_page/1 3
+/index 2
+/home 1

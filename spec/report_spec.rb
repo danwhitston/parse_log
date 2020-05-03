@@ -48,7 +48,7 @@ RSpec.describe Report do
         { path: '/about', visits: 2 },
         { path: '/index', visits: 1 }
       ]
-      summary_report = <<~EOS
+      summary_report = <<~TESTREPORT
         Page visits:
         /about 5
         /help/1 3
@@ -58,7 +58,7 @@ RSpec.describe Report do
         /help/1 3
         /about 2
         /index 1
-        EOS
+      TESTREPORT
       allow(path_list).to receive(:visit_summary).and_return(visit_summary)
       allow(path_list).to receive(:unique_summary).and_return(unique_summary)
       expect(subject.full_report).to include(summary_report)

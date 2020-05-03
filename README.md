@@ -10,7 +10,7 @@ Before using the program, you'll need to download the code and open a shell cons
 
 ```sh
 bundle install
-parser.rb webserver.log # runs with the sample logfile
+./parse_log.rb webserver.log # runs with the sample logfile
 ```
 
 A sample logfile is included at [webserver.log](webserver.log).
@@ -30,12 +30,24 @@ The sample file uses a LF character to separate each line, but CRLF line-ends, a
 
 ## Output format
 
-The output will be sent to stdout (i.e. the console you're running the script in). The output will consist of two lists:
+The output is sent to stdout (i.e. the console you're running the script in). The output consists of two lists:
 
 * One for the total number of visits to each path (i.e. the number of times each path appears in the input file)
 * One for the total number of unique visits to each path (i.e. the number of different IP addresses that appear next to each path in the input file)
 
-Each list will be ordered by the relevant total, most visits first. Each line in the list will consist of the path, then a space, then the relevant total.
+Each list is ordered by the total visits, most visits first. Each line in the list consists of the path, then a space, then the relevant total. For example:
+
+```
+Page visits:
+/index 4
+/help_page/1 3
+/home 1
+
+Unique page visits:
+/help_page/1 3
+/index 2
+/home 1
+```
 
 ## Testing
 
@@ -45,43 +57,39 @@ Program functionality is tested with RSpec. From the root directory, run:
 rspec
 ```
 
-All tests should pass. SimpleCov is enabled and the RSpec report should include test coverage.
+SimpleCov is enabled and running RSpec will generate a test coverage report in the coverage folder. All tests should pass, and the code has 100% coverage. Note however that SimpleCov is currently filtering out the `parse_log.rb` script in root.
 
 ### Feature testing
 
-Feature specs should interact with an application via its external interface. Since our interface is a Ruby script executed via command line, we call the script as a new process via `system ruby` and test the output to stdout or stderr. The log files are:
+Feature specs should interact with an application via its external interface. Since our interface is a Ruby script executed via command line, we call the script as a new process via `system ruby` and test the output to stdout or stderr.
 
-* A tiny log file - [spec/fixtures/tiny.log](spec/fixtures/tiny.log) to exercise basic file access tests
-* A small log file - [spec/fixtures/small.log](spec/fixtures/small.log) producing output consistent with [spec/fixtures/small_summary.txt](spec/fixtures/small_summary.txt)
+The feature test makes use of a small log file - [spec/fixtures/small.log](spec/fixtures/small.log) producing output consistent with [spec/fixtures/small_summary.txt](spec/fixtures/small_summary.txt).
 
 ## Assumptions and architecture
 
-The key decision point in picking a suitable architecture is whether the application should be able to cope with arbitrarily large logfiles. The simplest solution would rely on reading the entire logfile into memory using e.g. `File.readlines`, then transforming the data afterwards and producing output. I decided to build for a solution that reduces memory usage by processing the log during load using `File#each`. 
+The key decision point in picking a suitable architecture is whether the application should be able to cope with arbitrarily large logfiles. The simplest solution would rely on reading the entire logfile into memory using e.g. `File.readlines`, then transforming the data afterwards and producing output. I decided to build for a slightly more scalable solution that reduces memory usage by processing the log during load using `File#each`. 
 
-I can see three levels of efficiency, and am targeting the second:
+This architecture does come with limitations. Very large log files cannot be loaded into memory all in one go. Instead we'd need to look at processing logfiles into intermediate files where visits were grouped by path and IP, then into files containing per-path totals. If we were looking at logfiles of that size, though, a Ruby script might not be the best solution in general, and displaying a list of paths in the console would be pointless.
 
-1. Log files of e.g. a few million visits are fine for loading the full file directly, and processing in-memory. Populating an array with even a hundred million elements is manageable and takes less than half a minute on most modern desktop computers
-1. For larger files, there should be some benefit to loading the data into memory one line at a time, and storing in a processed form. To measure unique visits, we would still have to store individual IPs visiting each path. This could become taxing for large enough logfiles
-1. Very large log files could not be loaded into memory all in one go. Instead we'd need to look at processing logfiles into intermediate files where visits were grouped by path and IP, then into files containing per-path totals. If we were looking at logfiles of that size, though, a Ruby script might not be the best solution in general, and displaying a list of paths in the console would be pointless
+The software structure is:
 
-An outline list of classes might be:
+* `parse_log.rb` - the command-line script, accepts filename, opens file, instantiates objects and outputs parsed data
+* `lib/parser.rb` - Parser module accepts input and returns output. This was extracted from parse_log to keep the code clean and make testing easier
+* `lib/path_list.rb` - PathList class stores and summarises the paths and visits by individual IP addresses
+* `lib/report.rb` - Report class inserts list summaries into a template for output to the console
 
-* Parser - the external interface; accepts input and returns output
-* PathList - store and manipulate the set of paths
-* Report - inserts list totals into a template for output to the console
-
-Creating individual PathItem objects for each path in the PathList object would result in better-formed OO code, but the weight of creating a new class instance for every path in a log file would likely reduce the code's efficiency.
+Creating individual PathItem objects for each path in the PathList object would result in better-formed OO code as IP address storage for each path arguably violates SRP, but I suspect the weight of creating a new class instance for every path in a log file would reduce the code's efficiency.
 
 ## Development tasks
 
 - [x] Install Ruby, RSpec, initial test setup confirming a script exists and executes correctly without arguments
 - [x] Add code coverage checks
 - [x] Add a basic logfile, expected output, and feature test to drive feature development
-- [ ] Accept a filename input, and throw an error if the filename or the file don't exist
-- [ ] Parse file lines into a PathList object, with many visits to each unique path
+- [x] Accept a filename input, and throw an error if the filename or the file don't exist
+- [x] Parse file lines into a PathList object, with many visits to each unique path
 - [x] Summarise the PathList data as total and total unique visits per path
 - [x] Output summary data as a Report in the correct format
-- [ ] tbc
+- [x] Working solution accepting a filename and outputting page views and unique page views
 
 ## 'Extra credit' tasks
 
@@ -98,9 +106,9 @@ Creating individual PathItem objects for each path in the PathList object would 
 - [ ] Report on parsing failures; add a strict-mode flag that fails if unparseable or invalid data is encountered
 - [ ] Confirm Windows command line compatibility
 
-## Versioning
+## Version
 
-This is currently pre-alpha, and has no version. Version tracking will be [SemVer](https://semver.org/) once an initial version is released.
+This is version 1.0.0. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
 
 ## License
 

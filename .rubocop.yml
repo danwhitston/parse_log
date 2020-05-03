@@ -1,0 +1,5 @@
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context', 'refine']
+
+AllCops:
+  NewCops: enable

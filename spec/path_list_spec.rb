@@ -49,6 +49,7 @@ RSpec.describe PathList do
         )
     end
 
+    # *now* we start to check order of response
     it 'summarises three visits, most visited first' do
       subject.add_visit(path: '/index', visit_ip: '382.335.626.855')
       subject.add_visit(path: '/about', visit_ip: '382.335.626.855')

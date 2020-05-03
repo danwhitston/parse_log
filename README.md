@@ -80,7 +80,7 @@ Creating individual PathItem objects for each path in the PathList object would 
 - [ ] Accept a filename input, and throw an error if the filename or the file don't exist
 - [ ] Parse file lines into a PathList object, with many visits to each unique path
 - [x] Summarise the PathList data as total and total unique visits per path
-- [ ] Output summary data as a Report in the correct format
+- [x] Output summary data as a Report in the correct format
 - [ ] tbc
 
 ## 'Extra credit' tasks

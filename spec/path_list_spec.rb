@@ -26,22 +26,22 @@ RSpec.describe PathList do
 
   describe '.visit_summary' do
     it 'returns a single visit correctly' do
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
       expect(subject.visit_summary)
         .to eq [['/about', 1]]
     end
 
     it 'returns two visits to the same path' do
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
       expect(subject.visit_summary)
         .to eq [['/about', 2]]
     end
 
     # matcher does not check order of response as not relevant here
     it 'returns two visits to different paths' do
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/index', visit_ip: '382.335.626.855')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/index', visit_ip: '143.251.141.12')
       expect(subject.visit_summary)
         .to contain_exactly(
           ['/about', 1],
@@ -51,9 +51,9 @@ RSpec.describe PathList do
 
     # *now* we start to check order of response
     it 'summarises three visits, most visited first' do
-      subject.add_visit(path: '/index', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
+      subject.add_visit(path: '/index', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
       expect(subject.visit_summary)
         .to eq [
           ['/about', 2],
@@ -62,13 +62,13 @@ RSpec.describe PathList do
     end
 
     it 'sorts three paths by path as a secondary attribute' do
-      subject.add_visit(path: '/index', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/help', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/2020/news/hello', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/index', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/zindex', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/zindex', visit_ip: '382.335.626.855')
+      subject.add_visit(path: '/index', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/help', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/2020/news/hello', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/index', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/zindex', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/zindex', visit_ip: '143.251.141.12')
       expect(subject.visit_summary)
         .to eq [
           ['/index', 2],
@@ -82,17 +82,17 @@ RSpec.describe PathList do
 
   describe '.unique_summary' do
     it 'returns two visits to the same path as 1 visit' do
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
       expect(subject.unique_summary)
         .to eq [['/about', 1]]
     end
 
     it 'summarises four visits with one duplicate IP, most uniques first' do
-      subject.add_visit(path: '/index', visit_ip: '382.335.626.855')
+      subject.add_visit(path: '/index', visit_ip: '143.251.141.12')
       subject.add_visit(path: '/index', visit_ip: '25.132.156.854')
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
-      subject.add_visit(path: '/about', visit_ip: '382.335.626.855')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
+      subject.add_visit(path: '/about', visit_ip: '143.251.141.12')
       expect(subject.unique_summary)
         .to eq [
           ['/index', 2],

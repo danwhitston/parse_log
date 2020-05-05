@@ -13,17 +13,17 @@ bundle install
 ./parse_log.rb webserver.log # runs with the sample logfile
 ```
 
-A sample logfile is included at [webserver.log](webserver.log).
+A sample logfile is included at [webserver.log](webserver.log). It currently shows no visits, as all of the IP addresses in the file are invalid IPv4 addresses, i.e. one or more parts in each address has a numeric value outside of the valid range 0-255.
 
 ## Logfile format
 
 The logfile should be a text file (UTF-8 is fine) consisting of a list of page requests, one per line. Each line consists of a valid path, then a space, then a valid IPv4 address. For example:
 
 ```
-/home 382.335.626.855
-/index 929.398.951.889
-/index 715.156.286.412
-/help_page/1 382.335.626.855
+/home 143.251.141.12
+/index 183.151.12.151
+/index 14.234.9.225
+/help_page/1 143.251.141.12
 ```
 
 The sample file uses a LF character to separate each line, but CRLF line-ends, as used on Windows, should also work fine.
@@ -78,7 +78,7 @@ The software structure is:
 * `lib/path_list.rb` - PathList class stores and summarises the paths and visits by individual IP addresses
 * `lib/report.rb` - Report class inserts list summaries into a template for output to the console
 
-Creating individual PathItem objects for each path in the PathList object would result in better-formed OO code as IP address storage for each path arguably violates SRP, but I suspect the weight of creating a new class instance for every path in a log file would reduce the code's efficiency.
+Creating individual PathItem objects for each path in the PathList object would result in better-formed OO code as IP address storage for each path arguably violates SRP. This is also true for what would be the LineParser object inside the Parser module. I suspect the weight of creating a new class instance for every path in a log file would reduce the code's efficiency, although I haven't load-tested to confirm this yet.
 
 ## Development tasks
 
@@ -98,18 +98,17 @@ Creating individual PathItem objects for each path in the PathList object would 
 - [ ] Add a help flag to the command line with usage instructions
 - [x] Ensure CRLF and LF both work for input file format
 - [ ] Build code to generate arbitrarily large logfiles for load testing purposes, and ensure the script performs well under load
-- [ ] Parse all valid path possibilities correctly, i.e. paths with space characters or other special characters
-- [ ] Validate URL paths to the official standard
-- [ ] Validate IPv4 addresses to the official standard
+- [x] Validate URL paths
+- [x] Validate IPv4 addresses to the official standard
 - [ ] Add parsing of correctly formed IPv6 addresses
-- [ ] Fail gracefully during parsing, and exclude unparseable data from summaries
+- [x] Fail gracefully during parsing, and exclude unparseable data from summaries
 - [ ] Report on parsing failures
 - [ ] Add a strict-mode flag that fails if unparseable or invalid data is encountered
 - [ ] Confirm Windows command line compatibility
 
 ## Version
 
-This is version 1.0.2. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
+This is version 1.1.0. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
 
 ## License
 

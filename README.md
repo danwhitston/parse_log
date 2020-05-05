@@ -96,19 +96,20 @@ Creating individual PathItem objects for each path in the PathList object would 
 - [x] Sort results alphanumerically within sets of paths that have the same totals 
 - [ ] Add flags to the command line to show only total visits, and only total unique visits
 - [ ] Add a help flag to the command line with usage instructions
-- [ ] Ensure CRLF and LF both work for input file format
+- [x] Ensure CRLF and LF both work for input file format
 - [ ] Build code to generate arbitrarily large logfiles for load testing purposes, and ensure the script performs well under load
 - [ ] Parse all valid path possibilities correctly, i.e. paths with space characters or other special characters
 - [ ] Validate URL paths to the official standard
 - [ ] Validate IPv4 addresses to the official standard
 - [ ] Add parsing of correctly formed IPv6 addresses
 - [ ] Fail gracefully during parsing, and exclude unparseable data from summaries
-- [ ] Report on parsing failures; add a strict-mode flag that fails if unparseable or invalid data is encountered
+- [ ] Report on parsing failures
+- [ ] Add a strict-mode flag that fails if unparseable or invalid data is encountered
 - [ ] Confirm Windows command line compatibility
 
 ## Version
 
-This is version 1.0.1. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
+This is version 1.0.2. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
 
 ## License
 

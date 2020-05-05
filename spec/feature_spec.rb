@@ -23,4 +23,11 @@ RSpec.describe 'Command-line script' do
       .to output(expected_output)
       .to_stdout_from_any_process
   end
+
+  it 'parses the test file correctly with CRLF separators' do
+    expected_output = File.read('spec/fixtures/small_summary.txt')
+    expect { system %(ruby parse_log.rb spec/fixtures/crlf_check.log) }
+      .to output(expected_output)
+      .to_stdout_from_any_process
+  end
 end

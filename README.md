@@ -112,7 +112,7 @@ Report#full_summary is not currently memoised - it gets called once by the comma
 
 ## Version
 
-This is version 1.1.1. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
+This is version 1.1.2. Version tracking follows [SemVer](https://semver.org/), and each release is tagged on the repository. There is no CHANGELOG at present.
 
 ## License
 

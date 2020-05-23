@@ -8,12 +8,14 @@ class Report
 
   def full_report
     "Page visits:\n" +
-      visit_report(@path_list.visit_summary) +
+      visit_report(path_list.visit_summary) +
       "\nUnique page visits:\n" +
-      visit_report(@path_list.unique_summary)
+      visit_report(path_list.unique_summary)
   end
 
   private
+
+  attr_reader :path_list
 
   def visit_report(summary_list)
     summary_list.reduce('') do |report, report_line|

@@ -21,8 +21,10 @@ class PathList
 
   private
 
+  attr_reader :list
+
   def summary_by
-    @list
+    list
       .transform_values { |ip_list| yield(ip_list) }
       .sort_by { |path, visits| [-visits, path] }
   end

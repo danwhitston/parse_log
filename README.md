@@ -80,6 +80,8 @@ The software structure is:
 
 Creating individual PathItem objects for each path in the PathList object would result in better-formed OO code as IP address storage for each path arguably violates SRP. This is also true for what would be the LineParser object inside the Parser module. I suspect the weight of creating a new class instance for every path in a log file would reduce the code's efficiency, although I haven't load-tested to confirm this yet.
 
+Report#full_summary is not currently memoised - it gets called once by the command script, and [caching results prematurely causes errors](https://thoughtbot.com/blog/ruby-memoization-and-alternatives).
+
 ## Development tasks
 
 - [x] Install Ruby, RSpec, initial test setup confirming a script exists and executes correctly without arguments
